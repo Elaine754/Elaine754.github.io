@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ============================================
+  Elaine 个人主页 · 暖色小猫版
+  用法：
+   1) 把你的照片放到本文件同一文件夹，命名为 photo.jpg
+   2) 全文搜索【】替换成你的内容
+  板块：姓名+相框 / 自我介绍 / 爱好 / 方向 / 来自哪里 / QQ / 发展目标
+============================================ -->
+<title>【你的名字】</title>
+<style>
+  :root{
+    --bg:#fdf3e7; --card:#fffaf3; --line:#f0dcc4;
+    --text:#4a3527; --muted:#9a7b62;
+    --a:#e8743b; --b:#e9a23b;
+    --radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.8;overflow-x:hidden}
+  ::selection{background:rgba(232,116,59,.25)}
+
+  .orb{position:fixed;border-radius:50%;filter:blur(130px);opacity:.4;pointer-events:none}
+  .orb1{width:480px;height:480px;background:#ffd8a8;top:-140px;left:-140px}
+  .orb2{width:440px;height:440px;background:#ffb3a7;bottom:-120px;right:-120px}
+
+  .wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:80px 24px 120px}
+
+  /* ===== 顶部：照片框 + 姓名 ===== */
+  .hero{display:flex;align-items:center;gap:36px;margin-bottom:56px;flex-wrap:wrap;justify-content:center}
+
+  /* 小猫相框 */
+  .photo-frame{position:relative;width:200px;height:200px;flex-shrink:0}
+  .photo-frame .cat-ears{position:absolute;top:-14px;left:0;right:0;display:flex;justify-content:space-between;padding:0 18px;z-index:2}
+  .photo-frame .ear{width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:26px solid var(--a)}
+  .photo-frame .ear.right{border-bottom-color:var(--b)}
+  .photo-frame .ring{
+    width:100%;height:100%;border-radius:50%;padding:8px;
+    background:linear-gradient(135deg,var(--a),var(--b));
+    box-shadow:0 8px 30px rgba(232,116,59,.3);
+  }
+  .photo-frame .ring img{
+    width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;background:#f7e3cc;
+  }
+  .photo-frame .peek-cat{position:absolute;bottom:-6px;right:-18px;font-size:38px;z-index:3;animation:bounce 2s ease-in-out infinite}
+  .photo-frame .paw1{position:absolute;top:12px;right:-14px;font-size:20px;opacity:.7;z-index:3}
+  .photo-frame .paw2{position:absolute;bottom:30px;left:-16px;font-size:18px;opacity:.6;z-index:3}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+  .hero-text h1{font-size:clamp(34px,6vw,50px);font-weight:800;margin-bottom:10px}
+  .hero-text h1 .grad{background:linear-gradient(135deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-text .from{font-size:17px;color:var(--muted);margin-bottom:14px}
+  .hero-text .from b{color:var(--a)}
+  .qq{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);
+    padding:8px 18px;border-radius:999px;font-size:14px}
+  .qq b{color:var(--a)}
+
+  /* 板块 */
+  section{margin-bottom:38px;animation:rise .7s ease both}
+  section:nth-of-type(2){animation-delay:.05s}
+  section:nth-of-type(3){animation-delay:.1s}
+  section:nth-of-type(4){animation-delay:.15s}
+  section:nth-of-type(5){animation-delay:.2s}
+  .sec-tag{color:var(--a);font-size:13px;letter-spacing:3px;font-weight:700;margin-bottom:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 28px;box-shadow:0 4px 20px rgba(232,116,59,.06)}
+  .card p{font-size:15.5px}
+  .card p + p{margin-top:10px}
+
+  /* 方向 / 目标 */
+  .big-line{display:flex;gap:12px;align-items:flex-start}
+  .big-line .em{font-size:26px;line-height:1.4}
+
+  /* 爱好 */
+  .tags{display:flex;flex-wrap:wrap;gap:10px}
+  .tag{padding:8px 16px;border:1px solid var(--line);border-radius:999px;font-size:14px;background:var(--card);transition:all .2s}
+  .tag:hover{border-color:var(--a);background:rgba(232,116,59,.08);transform:translateY(-2px)}
+
+  footer{text-align:center;margin-top:50px;color:var(--muted);font-size:13px}
+
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+  /* ===== 底部散步小猫 ===== */
+  #cat{position:fixed;bottom:16px;left:0;z-index:9999;font-size:40px;cursor:pointer;
+    user-select:none;line-height:1;filter:drop-shadow(0 6px 8px rgba(120,70,30,.25));transition:transform .15s}
+  #cat .paw{position:absolute;right:-14px;bottom:0;font-size:18px;opacity:0;transition:opacity .2s}
+  #cat.lick .paw{opacity:1;animation:lick .5s ease-in-out infinite alternate}
+  @keyframes lick{from{transform:translateY(0) rotate(-10deg)}to{transform:translateY(-6px) rotate(10deg)}}
+  .walk{animation:walk .7s ease-in-out infinite}
+  @keyframes walk{0%,100%{margin-top:0}50%{margin-top:-5px}}
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="wrap">
+
+  <!-- ===== 顶部：小猫相框 + 姓名 ===== -->
+  <div class="hero">
+    <!-- 小猫相框：把你的照片命名为 photo.jpg 放在同目录即可自动显示 -->
+    <div class="photo-frame">
+      <div class="cat-ears"><div class="ear"></div><div class="ear right"></div></div>
+      <div class="ring"><img src="photo.jpg" alt="我的照片"></div>
+      <span class="paw1">🐾</span>
+      <span class="paw2">🐾</span>
+      <span class="peek-cat">🐱</span>
+    </div>
+    <div class="hero-text">
+      <h1>李思颖(Elaine)</h1>
+      <div class="from">来自 <b>湖南娄底</b></div>
+      <div class="qq">💬 QQ：<b>3376168148</b></div>
+    </div>
+  </div>
+
+  <!-- 自我介绍 -->
+  <section>
+    <div class="sec-tag">ABOUT ME</div>
+    <div class="card">
+      <!-- 编辑：自我介绍 -->
+      <p>我来自25级信息安全一班，现在主要的学习方向是后端，希望在工作室的每一天都能和大家一起进步</p>
+      <p>我的性格比较开朗乐观</p>
+    </div>
+  </section>
+
+  <!-- 方向 -->
+  <section>
+    <div class="sec-tag">MY DIRECTION</div>
+    <div class="card big-line">
+      <div class="em">🎯</div>
+      <!-- 编辑：你的方向 -->
+      <p><b>后端</b> —— 负责服务器、数据库、业务逻辑，接收前端发来的请求，处理数据，返回结果</p>
+    </div>
+  </section>
+
+  <!-- 爱好 -->
+  <section>
+    <div class="sec-tag">HOBBIES</div>
+    <!-- 编辑：每个 .tag 是一个爱好 -->
+    <div class="tags">
+      <span class="tag">📖 阅读</span>
+      <span class="tag">✈️ 旅行</span>
+      <span class="tag">📷 摄影</span>
+      <span class="tag">🎧 音乐</span>
+      <span class="tag">电吉他</span>
+    </div>
+  </section>
+
+  <!-- 发展目标 -->
+  <section>
+    <div class="sec-tag">MY GOALS</div>
+    <div class="card big-line">
+      <div class="em">🌟</div>
+      <!-- 编辑：将来的发展目标 -->
+      <p>在接下来的个人规划中，我的目标是继续读研，日常学习，学习好专业课，保持自己的专业成绩，在工作室的学习上，努力学习对应方向的知识，和组内的小伙伴一起面对接下来的各种比赛和事项，除此之外我也很喜欢和老师交流，希望在学习中，真正提高自己的专业水平za</p>
+    </div>
+  </section>
+
+  <footer>© <span id="yr"></span> Elaine· Made with ❤️ &amp; 🐱</footer>
+</div>
+
+<!-- 底部散步小猫 -->
+<div id="cat"><span class="face">🐈</span><span class="paw">🐾</span></div>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  const cat = document.getElementById('cat');
+  const face = cat.querySelector('.face');
+  let x = window.innerWidth/2, dir = 1, speed = 0.8, licking = false;
+  const WALK = '🐈', SIT = '😺';
+  (function frame(){
+    if(!licking){
+      x += dir*speed;
+      if(x > window.innerWidth-60) dir = -1;
+      if(x < 20) dir = 1;
+      cat.style.left = x+'px';
+      cat.style.transform = `scaleX(${dir})`;
+    }
+    requestAnimationFrame(frame);
+  })();
+  cat.addEventListener('click', ()=>{
+    if(licking) return;
+    licking = true;
+    cat.classList.remove('walk'); cat.classList.add('lick');
+    face.textContent = SIT;
+    setTimeout(()=>{
+      licking = false;
+      cat.classList.remove('lick'); cat.classList.add('walk');
+      face.textContent = WALK;
+    }, 2500);
+  });
+  cat.classList.add('walk');
+</script>
+</body>
+</html>
